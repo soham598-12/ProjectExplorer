@@ -20,8 +20,9 @@ export default async function ProjectDetails({
   }
 
   return (
-    <main>
-      <h1>{project.name}</h1>
+    <main className="project-details">
+      <div className ="details-card">
+            <h1>{project.name}</h1>
 
       <p>{project.description}</p>
 
@@ -62,6 +63,7 @@ export default async function ProjectDetails({
         >
         View on GitHub
         </a>
+      </div>
     </main>
   );
 }
