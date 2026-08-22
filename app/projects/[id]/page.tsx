@@ -1,16 +1,22 @@
+import SaveButton from "../../../components/SaveButton";
 import { projects } from "../../../data/projects";
-
-export default function ProjectDetails({
+export default async function ProjectDetails({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
+
   const project = projects.find(
-    (project) => project.id === Number(params.id)
+    (project) => String(project.id) === id
   );
 
   if (!project) {
-    return <h1>Project not found</h1>;
+    return (
+      <main>
+        <h1>Project not found</h1>
+      </main>
+    );
   }
 
   return (
@@ -42,13 +48,20 @@ export default function ProjectDetails({
           : "🔴 Not Beginner Friendly"}
       </p>
 
-      <a
+      <br />
+
+     <SaveButton projectId={project.id} />
+
+        <br />
+        <br />
+
+        <a
         href={project.githubUrl}
         target="_blank"
         rel="noopener noreferrer"
-      >
+        >
         View on GitHub
-      </a>
+        </a>
     </main>
   );
 }
