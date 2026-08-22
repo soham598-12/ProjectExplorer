@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { projects } from "../../data/projects";
 
 export default function ProjectsPage() {
@@ -7,6 +8,12 @@ export default function ProjectsPage() {
     const [selectedDomain, setSelectedDomain] = useState("All");
     const [selectedDifficulty, setSelectedDifficulty] = useState("All");
     const [beginnerOnly, setBeginnerOnly] = useState(false);
+    const clearFilters = () => {
+        setSearch("");
+        setSelectedDomain("All");
+        setSelectedDifficulty("All");
+        setBeginnerOnly(false);
+    };
       const filteredProjects = projects.filter(
             (project) =>
                 project.name.toLowerCase().includes(search.toLowerCase()) &&
@@ -57,38 +64,43 @@ export default function ProjectsPage() {
 
             Beginner Friendly Only
         </label>
+        <button onClick={clearFilters}>
+            Clear Filters
+        </button>
+     <div>
+  {filteredProjects.map((project) => (
+    <Link href={`/projects/${project.id}`} key={project.id}>
       <div>
-        {filteredProjects.map((project) => (
-          <div key={project.id}>
-            <h2>{project.name}</h2>
+        <h2>{project.name}</h2>
 
-            <p>{project.description}</p>
+        <p>{project.description}</p>
 
-            <p>
-              <strong>Domain:</strong> {project.domain}
-            </p>
+        <p>
+          <strong>Domain:</strong> {project.domain}
+        </p>
 
-            <p>
-              <strong>Technologies:</strong>{" "}
-              {project.technologies.join(", ")}
-            </p>
+        <p>
+          <strong>Technologies:</strong>{" "}
+          {project.technologies.join(", ")}
+        </p>
 
-            <p>
-              <strong>Difficulty:</strong> {project.difficulty}
-            </p>
+        <p>
+          <strong>Difficulty:</strong> {project.difficulty}
+        </p>
 
-            <p>⭐ {project.stars.toLocaleString()}</p>
+        <p>⭐ {project.stars.toLocaleString()}</p>
 
-            <p>
-              {project.beginnerFriendly
-                ? "🟢 Beginner Friendly"
-                : "🔴 Not Beginner Friendly"}
-            </p>
+        <p>
+          {project.beginnerFriendly
+            ? "🟢 Beginner Friendly"
+            : "🔴 Not Beginner Friendly"}
+        </p>
 
-            <hr />
-          </div>
-        ))}
+        <hr />
       </div>
+    </Link>
+  ))}
+</div>
     </main>
   );
 }
