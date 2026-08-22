@@ -37,8 +37,8 @@ export default function SaveButton({ projectId }: { projectId: number }) {
   };
 
   return (
-    <button onClick={toggleSave}>
-      {saved ? "★ Saved" : "☆ Save Project"}
-    </button>
-  );
+  <button className="save-btn" onClick={toggleSave}>
+    {saved ? "★ Saved" : "☆ Save Project"}
+  </button>
+);
 }

@@ -24,83 +24,123 @@ export default function ProjectsPage() {
                 (!beginnerOnly || project.beginnerFriendly)
         );
   return (
-    <main>
+  <main>
+    <div className="page-header">
       <h1>Explore Open Source Projects</h1>
+      <p>
+        Discover projects you can learn from and contribute to.
+      </p>
+    </div>
 
-      <p>Discover projects you can learn from and contribute to.</p>
+    {/* Filters */}
+    <div className="filters">
+      <input
+        type="text"
+        placeholder="🔍 Search projects..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+
+      <select
+        value={selectedDomain}
+        onChange={(e) => setSelectedDomain(e.target.value)}
+      >
+        <option value="">All Domains</option>
+
+        {/* KEEP YOUR EXISTING DOMAIN OPTIONS HERE */}
+      </select>
+
+      <select
+        value={selectedDifficulty}
+        onChange={(e) => setSelectedDifficulty(e.target.value)}
+      >
+        <option value="">All Difficulties</option>
+
+        {/* KEEP YOUR EXISTING DIFFICULTY OPTIONS HERE */}
+      </select>
+
+      <label className="checkbox-filter">
         <input
-            type="text"
-            placeholder="Search projects..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+          type="checkbox"
+          checked={beginnerOnly}
+          onChange={(e) => setBeginnerOnly(e.target.checked)}
         />
-       <select
-            value={selectedDomain}
-            onChange={(e) => setSelectedDomain(e.target.value)}
-            >
-            <option value="All">All Domains</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Backend">Backend</option>
-            <option value="AI/ML">AI/ML</option>
-            <option value="DevOps">DevOps</option>
-            <option value="Mobile Development">Mobile Development</option>
-            <option value="Developer Tools">Developer Tools</option>
-        </select>
-        <select
-            value={selectedDifficulty}
-            onChange={(e) => setSelectedDifficulty(e.target.value)}
-            >
-            <option value="All">All Difficulties</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-        </select>
-        <label>
-            <input
-                type="checkbox"
-                checked={beginnerOnly}
-                onChange={(e) => setBeginnerOnly(e.target.checked)}
-            />
+        Beginner Friendly Only
+      </label>
 
-            Beginner Friendly Only
-        </label>
-        <button onClick={clearFilters}>
-            Clear Filters
-        </button>
-     <div>
-  {filteredProjects.map((project) => (
-    <Link href={`/projects/${project.id}`} key={project.id}>
-      <div>
-        <h2>{project.name}</h2>
+      <button
+        className="clear-btn"
+        onClick={clearFilters}
+      >
+        Clear Filters
+      </button>
+    </div>
 
-        <p>{project.description}</p>
+    <p className="results-count">
+      {filteredProjects.length} projects found
+    </p>
 
-        <p>
-          <strong>Domain:</strong> {project.domain}
-        </p>
+    {/* Project Cards */}
+    <div className="projects-grid">
+      {filteredProjects.map((project) => (
+        <Link
+          href={`/projects/${project.id}`}
+          key={project.id}
+          className="project-card"
+        >
+          <div className="project-card-top">
+            <h2>{project.name}</h2>
 
-        <p>
-          <strong>Technologies:</strong>{" "}
-          {project.technologies.join(", ")}
-        </p>
+            <span className="difficulty-badge">
+              {project.difficulty}
+            </span>
+          </div>
 
-        <p>
-          <strong>Difficulty:</strong> {project.difficulty}
-        </p>
+          <p className="project-description">
+            {project.description}
+          </p>
 
-        <p>⭐ {project.stars.toLocaleString()}</p>
+          <div className="project-domain">
+            📁 {project.domain}
+          </div>
 
-        <p>
-          {project.beginnerFriendly
-            ? "🟢 Beginner Friendly"
-            : "🔴 Not Beginner Friendly"}
-        </p>
+          <div className="project-tags">
+            {project.technologies.map((technology) => (
+              <span key={technology}>
+                {technology}
+              </span>
+            ))}
+          </div>
 
-        <hr />
+          <div className="project-card-bottom">
+            <span className="stars">
+              ⭐ {project.stars.toLocaleString()}
+            </span>
+
+            {project.beginnerFriendly ? (
+              <span className="beginner">
+                🟢 Beginner Friendly
+              </span>
+            ) : (
+              <span className="not-beginner">
+                🔴 Advanced
+              </span>
+            )}
+          </div>
+
+          <div className="view-project">
+            View Project →
+          </div>
+        </Link>
+      ))}
+    </div>
+
+    {filteredProjects.length === 0 && (
+      <div className="no-results">
+        <h2>No projects found 😕</h2>
+        <p>Try changing your search or filters.</p>
       </div>
-    </Link>
-  ))}
-</div>
-    </main>
-  );
+    )}
+  </main>
+);
 }
